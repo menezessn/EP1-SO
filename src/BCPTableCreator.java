@@ -3,9 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BCPTableCreator {
-    public static List<BCP> createBCPTable(){
+    public static List<BCP> createBCPTable(String folder){
         List<BCP> BCPs = new ArrayList<>();
-        String path = "programas/";
+        String path = folder;
         File file = new File(path);
         if(file.exists() && file.isDirectory()){
             File[] files = file.listFiles();
@@ -14,7 +14,7 @@ public class BCPTableCreator {
                     if(file1.isFile() && file1.getName().endsWith(".txt")){
                         try{
                             int numProg = Integer.parseInt(file1.getName().replace(".txt",""));
-                            String[] program = programReader.readProgram(numProg);
+                            String[] program = programReader.readProgram(numProg, "programas/");
                             BCP bcp = new BCP(program[0], Estado.PRONTO, program);
                             BCPs.add(bcp);
                         }catch (NumberFormatException e){

@@ -6,10 +6,10 @@ public class Main {
     public static void main(String[] args) {
 
         System.out.println("ESCALONADOR");
-        int quantum =  QuantumReader.readQuantum();
-        System.out.println(quantum); //numero de quantums
+        int quantum =  QuantumReader.readQuantum("programas/");
+        System.out.println(quantum); //numero de quantuns
 
-        List<BCP> programs = BCPTableCreator.createBCPTable(); // Criando lista de processos
+        List<BCP> programs = BCPTableCreator.createBCPTable("programas/"); // Criando lista de processos
 
         Queue<BCP> ready = new LinkedList<>(); //Fila de processos prontos
         Queue<BCP> blocked = new LinkedList<>(); //FIla de processos bloqueados

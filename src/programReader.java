@@ -3,8 +3,8 @@ import java.io.FileReader;
 
 public class programReader {
     //realiza a leitura de um programa e retorna um array com no maximo 22 posicoes
-    public static String[] readProgram(int numProg){
-        String path = "programas/";
+    public static String[] readProgram(int numProg, String folder){
+        String path = folder;
         String nameProg = String.format("%02d", numProg);
         String root = path + nameProg + ".txt";
         String program[] = new String[22];

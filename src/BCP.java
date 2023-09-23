@@ -5,6 +5,7 @@ public class BCP {
     private Estado processState;
     private int X = 0;
     private int Y = 0;
+    private int waitTime = 0;
     private String program[];
 
     public BCP(String name, Estado processState, String[] program) {

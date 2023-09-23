@@ -3,7 +3,7 @@ import java.io.FileWriter;
 
 public class LogFileWriter {
     public static void writeLogFile(String text){
-        String quantumValue = String.format("%02d", QuantumReader.readQuantum());
+        String quantumValue = String.format("%02d", QuantumReader.readQuantum("programas/"));
         String file = "log" + quantumValue + ".txt";
 
         try(BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))){
