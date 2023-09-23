@@ -4,7 +4,7 @@ import java.io.FileReader;
 public class QuantumReader {
 
     //Realiza a leitura do arquivo com o quantum dado em numero de comandos executados
-    static String root = "src/quantum.txt";
+    static String root = "programas/quantum.txt";
     public static int readQuantum(){
         try{
             BufferedReader br = new BufferedReader(new FileReader(root));
