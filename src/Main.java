@@ -85,7 +85,9 @@ public class Main {
             LogFileWriter.writeLogFile("Interrompendo " + runningProcess.getName() + " após "+ instructionsExecuted + " instruções");
             System.out.println("Interrompendo " + runningProcess.getName() + " após "+ instructionsExecuted + " instruções");
             runningProcess.setSwitches(runningProcess.getSwitches() + 1);
-            ready.offer(runningProcess);
+            if (runningProcess.getProcessState() == Estado.EXECUTANDO){
+                ready.offer(runningProcess);
+            }
         }
 
 
