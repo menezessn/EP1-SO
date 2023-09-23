@@ -1,0 +1,23 @@
+cada processo tem dois registradores apenas, além do PC.
+
+Lista de processos prontos e outra de bloqueados (aguardando E/S) conforme a ordem de chegada.
+
+Escalonador lê e executa os comandos.
+
+Tabela de processos com cada linha referenciando BCP, este contendo pelo menos o PC, estado do processo, seus registradores, referência de memória em que o código do programa está, nome do programa (criar uma classe processo e fazer um array de processos).
+
+Os programas têm no máximo 21 instruções e é representado por um array de strings, onde cada posição do array é um comando. Não contém variáveis nem desvios.
+
+programas serão em txt, primeira linha é o nome, cada linha uma instrução.
+
+cada processo roda no máximo n_com comandos (devemos definir o valor) definido em arquivo chamado quantum.txt
+
+Tópicos da página 2
+
+O escalonador deve construir um log file nomeado como “logXX.txt”, em que XX é o valor do quantum escolhido (2 dígitos).
+
+Media de trocas = soma do numero de trocas de processo de cada processo / numero de processos
+Media de instrucoes = Soma das medias de instrucoes executadas de cada processo a cada quantum / numero de processos
+medias de instrucoes executadas de cada processo a cada quantum = soma das intrucoes executadas em um quantum (ou seja, total de instrucoes) / numero de quantums ate o fim do processo(trocas)
+
+

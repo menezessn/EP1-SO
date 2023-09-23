@@ -7,6 +7,41 @@ public class BCP {
     private int Y = 0;
     private int waitTime = 0;
     private String program[];
+    private int switches = 0;
+    private double instructionsMean;
+    private int instructions = 0;
+
+    public int getInstructions() {
+        return instructions;
+    }
+
+    public void setInstructions(int instructions) {
+        this.instructions = instructions;
+    }
+
+    public double getInstructionsMean() {
+        return instructionsMean;
+    }
+
+    public void setInstructionsMean() {
+        this.instructionsMean = this.instructions/this.switches;
+    }
+
+    public int getWaitTime() {
+        return waitTime;
+    }
+
+    public void setWaitTime(int waitTime) {
+        this.waitTime = waitTime;
+    }
+
+    public int getSwitches() {
+        return switches;
+    }
+
+    public void setSwitches(int switches) {
+        this.switches = switches;
+    }
 
     public BCP(String name, Estado processState, String[] program) {
         this.name = name;

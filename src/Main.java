@@ -16,6 +16,8 @@ public class Main {
         System.out.println(quantum); //numero de quantuns
 
         List<BCP> programs = BCPTableCreator.createBCPTable("programas/"); // Criando lista de processos
+        int numberProcesses = programs.size();
+
 
         Queue<BCP> ready = new LinkedList<>(); //Fila de processos prontos
         Queue<BCP> blocked = new LinkedList<>(); //FIla de processos bloqueados
@@ -28,16 +30,27 @@ public class Main {
             System.out.println("Carregando " + program.getName());
         }
 
-        //while(ready.size()>0){
+        int switchesSum = 0;
+        int meanInstructionsMeanSum = 0;
+
+
+        //Rodando enquanto tiver processo na fila de prontos ou bloqueados
+        while(ready.size()>0 || blocked.size()>0){
+
             BCP runningProcess = ready.poll();
             runningProcess.setProcessState(Estado.EXECUTANDO);
+            LogFileWriter.writeLogFile("Executando " + runningProcess.getName());
+            System.out.println("Executando " + runningProcess.getName());
 
-            for (int i = 0; i < quantum; i++){
+            //Executa as instrucoes ate a quantidade de quantum ou enquanto nao houver interrupcao
+            int instructionsExecuted = 0;
+            for ( int i = 0; i < quantum; i++){
+                runningProcess.setInstructions(runningProcess.getInstructions()+1);
+                instructionsExecuted++;
                 String program[] = runningProcess.getProgram();
                 String instruction = program[runningProcess.getPC()];
                 if (instruction.contains("X=")){
                     int assignment = Integer.parseInt(instruction.replace("X=", ""));
-                    System.out.println(assignment);
                     runningProcess.setX(assignment);
                 }
                 if (instruction.contains("Y=")){
@@ -45,55 +58,43 @@ public class Main {
                     runningProcess.setX(assignment);
                 }
                 if(instruction.equals("E/S")){
+                    LogFileWriter.writeLogFile("E/S iniciada em " + runningProcess.getName());
+                    System.out.println("E/S iniciada em " + runningProcess.getName());
                     runningProcess.setProcessState(Estado.BLOQUEADO);
                     blocked.offer(runningProcess);
                     break;
                 }
                 if(instruction.equals("COM")){
-                    System.out.println("COM");
+                    //System.out.println("COM");
                 }
                 if(instruction.equals("SAIDA")){
                     runningProcess.setProcessState(Estado.BLOQUEADO);
-                    runningProcess.setPC(-1);
+                    //runningProcess.setPC(-1);
                     programs.remove(runningProcess);
+                    LogFileWriter.writeLogFile(runningProcess.getName() + (" terminado. ")
+                            + "X=" + runningProcess.getX() + " Y=" + runningProcess.getY());
+                    System.out.println(runningProcess.getName() + (" terminado. ")
+                            + "X=" + runningProcess.getX() + " Y=" + runningProcess.getY());
+                    switchesSum += runningProcess.getSwitches();
+                    meanInstructionsMeanSum += runningProcess.getInstructionsMean();
+                    runningProcess.setInstructionsMean();
                     break;
                 }
                 runningProcess.setPC(runningProcess.getPC()+1);
-
             }
-
-        //}
-
-
-
-//
-//
-//
-//
-//        for (BCP program : programs ){
-//            System.out.println(program.getName());
-//            System.out.println(program.getPC());
-//            System.out.println(program.getProcessState());
-//            System.out.println("///////////");
-//
-//        }
-//
-//        System.out.println("-----------teste alterar----------------");
-//        ready.peek().setProcessState(Estado.BLOQUEADO);
-//
-//
-//        System.out.println("-----------teste ----------------");
-//
-//        for (BCP program : programs ){
-//            System.out.println(program.getName());
-//            System.out.println(program.getPC());
-//            System.out.println(program.getProcessState());
-//            System.out.println("///////////");
-//
-//
-//        }
+            LogFileWriter.writeLogFile("Interrompendo " + runningProcess.getName() + " após "+ instructionsExecuted + " instruções");
+            System.out.println("Interrompendo " + runningProcess.getName() + " após "+ instructionsExecuted + " instruções");
+            runningProcess.setSwitches(runningProcess.getSwitches() + 1);
+            ready.offer(runningProcess);
+        }
 
 
+//        Media de trocas = soma do numero de trocas de processo de cada processo / numero de processos
+//        Media de instrucoes = Soma das medias de instrucoes executadas de cada processo a cada quantum / numero de processos
+//        medias de instrucoes executadas de cada processo a cada quantum = soma das intrucoes executadas em um quantum (ou seja, total de instrucoes) / numero de quantums ate o fim do processo(trocas)
+
+        double switchesMean = switchesSum / numberProcesses;
+        int generalInstructionsMean = meanInstructionsMeanSum / numberProcesses;
 
 
 
