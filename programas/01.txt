@@ -1,6 +1,6 @@
 TESTE-1
 X=8
-COM
+E/S
 COM
 COM
 E/S
