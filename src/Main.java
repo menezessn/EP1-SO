@@ -96,7 +96,7 @@ public class Main {
 //        medias de instrucoes executadas de cada processo a cada quantum = soma das intrucoes executadas em um quantum (ou seja, total de instrucoes) / numero de quantums ate o fim do processo(trocas)
 
         double switchesMean = switchesSum / numberProcesses;
-        int generalInstructionsMean = meanInstructionsMeanSum / numberProcesses;
+        double generalInstructionsMean = meanInstructionsMeanSum / numberProcesses;
 
 
 
