@@ -19,8 +19,9 @@ public class Main {
         int numberProcesses = programs.size();
 
 
-        Queue<BCP> ready = new LinkedList<>(); //Fila de processos prontos
-        Queue<BCP> blocked = new LinkedList<>(); //FIla de processos bloqueados
+        LinkedList<BCP> ready = new LinkedList<>(); //Fila de processos prontos
+        LinkedList<BCP> blocked = new LinkedList<>(); //FIla de processos bloqueados
+
 
 
         //adicionando todos os processos na fila de prontos
@@ -41,6 +42,8 @@ public class Main {
             runningProcess.setProcessState(Estado.EXECUTANDO);
             LogFileWriter.writeLogFile("Executando " + runningProcess.getName());
             System.out.println("Executando " + runningProcess.getName());
+            int teste;
+
 
             //Executa as instrucoes ate a quantidade de quantum ou enquanto nao houver interrupcao
             int instructionsExecuted = 0;
@@ -62,6 +65,8 @@ public class Main {
                     System.out.println("E/S iniciada em " + runningProcess.getName());
                     runningProcess.setProcessState(Estado.BLOQUEADO);
                     blocked.offer(runningProcess);
+                    runningProcess.setWaitTime(2);
+                    runningProcess.setPC(runningProcess.getPC()+1);
                     break;
                 }
                 if(instruction.equals("COM")){
@@ -87,6 +92,12 @@ public class Main {
             runningProcess.setSwitches(runningProcess.getSwitches() + 1);
             if (runningProcess.getProcessState() == Estado.EXECUTANDO){
                 ready.offer(runningProcess);
+            }
+            //Decrementa o tempo de espera de todos os elementos da fila
+            WaitTimeDecrementer.decrementWaitTime(blocked);
+            //verifica se acabou o tempo de espera de alguem na fila de bloqueados
+            while( WaitTimeChecker.checkWaitTime(blocked)){
+                ready.offer(blocked.remove());
             }
         }
 
