@@ -123,10 +123,5 @@ public class Main {
         System.out.println("MEDIA DE TROCAS " + switchesMean);
         System.out.println("MEDIA DE INSTRUÇÕES " + generalInstructionsMean);
 
-
-
-
-
-
     }
 }
