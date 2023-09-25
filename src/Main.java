@@ -38,6 +38,14 @@ public class Main {
         //Rodando enquanto tiver processo na fila de prontos ou bloqueados
         while(ready.size()>0 || blocked.size()>0){
 
+            //caso a lista de prontos esteja vazia, os bloqueados serão decrementados até que algum vá para a fila de prontos
+            while(ready.size() == 0){
+                WaitTimeDecrementer.decrementWaitTime(blocked);
+                while( WaitTimeChecker.checkWaitTime(blocked)){
+                    ready.offer(blocked.remove());
+                }
+            }
+
             BCP runningProcess = ready.poll();
             assert runningProcess != null;
             runningProcess.setProcessState(Estado.EXECUTANDO);
@@ -73,7 +81,7 @@ public class Main {
                 }
                 if(instruction.equals("SAIDA")){
                     runningProcess.setProcessState(Estado.BLOQUEADO);
-                    //runningProcess.setPC(-1);
+                    runningProcess.setPC(-1);
                     programs.remove(runningProcess);
                     LogFileWriter.writeLogFile(runningProcess.getName() + (" terminado. ")
                             + "X=" + runningProcess.getX() + " Y=" + runningProcess.getY());
@@ -86,13 +94,15 @@ public class Main {
                 }
                 runningProcess.setPC(runningProcess.getPC()+1);
             }
-            LogFileWriter.writeLogFile("Interrompendo " + runningProcess.getName() + " após "+ instructionsExecuted + " instruções");
-            System.out.println("Interrompendo " + runningProcess.getName() + " após "+ instructionsExecuted + " instruções");
+            LogFileWriter.writeLogFile("Interrompendo " + runningProcess.getName() +
+                    " após "+ instructionsExecuted + " instruções");
+            System.out.println("Interrompendo " + runningProcess.getName() +
+                    " após "+ instructionsExecuted + " instruções");
             runningProcess.setSwitches(runningProcess.getSwitches() + 1);
             if (runningProcess.getProcessState() == Estado.EXECUTANDO){
                 ready.offer(runningProcess);
             }
-            //Decrementa o tempo de espera de todos os elementos da fila
+            //Decrementa o tempo de espera de todos os elementos da fila de bloqueados
             WaitTimeDecrementer.decrementWaitTime(blocked);
             //verifica se acabou o tempo de espera de alguem na fila de bloqueados
             while( WaitTimeChecker.checkWaitTime(blocked)){
