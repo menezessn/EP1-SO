@@ -39,11 +39,10 @@ public class Main {
         while(ready.size()>0 || blocked.size()>0){
 
             BCP runningProcess = ready.poll();
+            assert runningProcess != null;
             runningProcess.setProcessState(Estado.EXECUTANDO);
             LogFileWriter.writeLogFile("Executando " + runningProcess.getName());
             System.out.println("Executando " + runningProcess.getName());
-            int teste;
-
 
             //Executa as instrucoes ate a quantidade de quantum ou enquanto nao houver interrupcao
             int instructionsExecuted = 0;
@@ -65,7 +64,7 @@ public class Main {
                     System.out.println("E/S iniciada em " + runningProcess.getName());
                     runningProcess.setProcessState(Estado.BLOQUEADO);
                     blocked.offer(runningProcess);
-                    runningProcess.setWaitTime(2);
+                    runningProcess.setWaitTime(3);
                     runningProcess.setPC(runningProcess.getPC()+1);
                     break;
                 }
@@ -81,8 +80,8 @@ public class Main {
                     System.out.println(runningProcess.getName() + (" terminado. ")
                             + "X=" + runningProcess.getX() + " Y=" + runningProcess.getY());
                     switchesSum += runningProcess.getSwitches();
-                    meanInstructionsMeanSum += runningProcess.getInstructionsMean();
                     runningProcess.setInstructionsMean();
+                    meanInstructionsMeanSum += runningProcess.getInstructionsMean();
                     break;
                 }
                 runningProcess.setPC(runningProcess.getPC()+1);
@@ -106,8 +105,16 @@ public class Main {
 //        Media de instrucoes = Soma das medias de instrucoes executadas de cada processo a cada quantum / numero de processos
 //        medias de instrucoes executadas de cada processo a cada quantum = soma das intrucoes executadas em um quantum (ou seja, total de instrucoes) / numero de quantums ate o fim do processo(trocas)
 
-        double switchesMean = switchesSum / numberProcesses;
-        double generalInstructionsMean = meanInstructionsMeanSum / numberProcesses;
+        double switchesMean = (double) switchesSum / numberProcesses;
+        double generalInstructionsMean = (double) meanInstructionsMeanSum / numberProcesses;
+
+        LogFileWriter.writeLogFile("MEDIA DE TROCAS " + switchesMean);
+        LogFileWriter.writeLogFile("MEDIA DE INSTRUÇÕES " + generalInstructionsMean);
+        System.out.println("MEDIA DE TROCAS " + switchesMean);
+        System.out.println("MEDIA DE INSTRUÇÕES " + generalInstructionsMean);
+
+
+
 
 
 
