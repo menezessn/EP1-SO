@@ -116,10 +116,13 @@ public class Main {
         double switchesMean = (double) switchesSum / numberProcesses;
         double generalInstructionsMean = (double) meanInstructionsMeanSum / numberProcesses;
 
-        logFile.write("MEDIA DE TROCAS " + switchesMean);
-        logFile.write("MEDIA DE INSTRUÇÕES " + generalInstructionsMean);
-        System.out.println("MEDIA DE TROCAS " + switchesMean);
-        System.out.println("MEDIA DE INSTRUÇÕES " + generalInstructionsMean);
+        logFile.write("MEDIA DE TROCAS: " + switchesMean);
+        logFile.write("MEDIA DE INSTRUÇÕES: " + generalInstructionsMean);
+        logFile.write("QUANTUM: " + quantum);
+
+        System.out.println("MEDIA DE TROCAS: " + switchesMean);
+        System.out.println("MEDIA DE INSTRUÇÕES: " + generalInstructionsMean);
+        System.out.println("QUANTUM: " + quantum);
 
     }
 }
