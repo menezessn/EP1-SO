@@ -5,11 +5,11 @@ import java.util.Queue;
 public class Main {
     public static void main(String[] args) {
 
-        System.out.println("ESCALONADOR");
+        //System.out.println("ESCALONADOR");
 
         int quantum =  QuantumReader.readQuantum("programas/");
 
-        System.out.println(quantum); //numero de quantuns
+        //System.out.println(quantum); //numero de quantuns
 
         List<BCP> programs = BCPTableCreator.createBCPTable("programas/"); // Criando lista de processos
         int numberProcesses = programs.size();
