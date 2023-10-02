@@ -9,10 +9,6 @@ public class Main {
 
         int quantum =  QuantumReader.readQuantum("programas/");
 
-        //Excluindo o arquivo de log, caso ele exista, para que nao haja conflito
-        DeleteLogFile.LogFileDelete(quantum);
-
-
         System.out.println(quantum); //numero de quantuns
 
         List<BCP> programs = BCPTableCreator.createBCPTable("programas/"); // Criando lista de processos
@@ -22,12 +18,14 @@ public class Main {
         LinkedList<BCP> ready = new LinkedList<>(); //Fila de processos prontos
         LinkedList<BCP> blocked = new LinkedList<>(); //FIla de processos bloqueados
 
-
+        // Criando arquivo de log para o quantum atual
+        // Construtor já verifica se o arquivo com mesmo quantum existe e o exclui
+        LogFile logFile = new LogFile();
 
         //adicionando todos os processos na fila de prontos
         for(BCP program : programs){
             ready.offer(program);
-            LogFileWriter.writeLogFile("Carregando " + program.getName());
+            logFile.write("Carregando " + program.getName());
             System.out.println("Carregando " + program.getName());
         }
 
@@ -49,7 +47,7 @@ public class Main {
             BCP runningProcess = ready.poll();
             assert runningProcess != null;
             runningProcess.setProcessState(Estado.EXECUTANDO);
-            LogFileWriter.writeLogFile("Executando " + runningProcess.getName());
+            logFile.write("Executando " + runningProcess.getName());
             System.out.println("Executando " + runningProcess.getName());
 
             //Executa as instrucoes ate a quantidade de quantum ou enquanto nao houver interrupcao
@@ -68,7 +66,7 @@ public class Main {
                     runningProcess.setX(assignment);
                 }
                 if(instruction.equals("E/S")){
-                    LogFileWriter.writeLogFile("E/S iniciada em " + runningProcess.getName());
+                    logFile.write("E/S iniciada em " + runningProcess.getName());
                     System.out.println("E/S iniciada em " + runningProcess.getName());
                     runningProcess.setProcessState(Estado.BLOQUEADO);
                     blocked.offer(runningProcess);
@@ -83,7 +81,7 @@ public class Main {
                     runningProcess.setProcessState(Estado.BLOQUEADO);
                     runningProcess.setPC(-1);
                     programs.remove(runningProcess);
-                    LogFileWriter.writeLogFile(runningProcess.getName() + (" terminado. ")
+                    logFile.write(runningProcess.getName() + (" terminado. ")
                             + "X=" + runningProcess.getX() + " Y=" + runningProcess.getY());
                     System.out.println(runningProcess.getName() + (" terminado. ")
                             + "X=" + runningProcess.getX() + " Y=" + runningProcess.getY());
@@ -94,7 +92,7 @@ public class Main {
                 }
                 runningProcess.setPC(runningProcess.getPC()+1);
             }
-            LogFileWriter.writeLogFile("Interrompendo " + runningProcess.getName() +
+            logFile.write("Interrompendo " + runningProcess.getName() +
                     " após "+ instructionsExecuted + " instruções");
             System.out.println("Interrompendo " + runningProcess.getName() +
                     " após "+ instructionsExecuted + " instruções");
@@ -118,8 +116,8 @@ public class Main {
         double switchesMean = (double) switchesSum / numberProcesses;
         double generalInstructionsMean = (double) meanInstructionsMeanSum / numberProcesses;
 
-        LogFileWriter.writeLogFile("MEDIA DE TROCAS " + switchesMean);
-        LogFileWriter.writeLogFile("MEDIA DE INSTRUÇÕES " + generalInstructionsMean);
+        logFile.write("MEDIA DE TROCAS " + switchesMean);
+        logFile.write("MEDIA DE INSTRUÇÕES " + generalInstructionsMean);
         System.out.println("MEDIA DE TROCAS " + switchesMean);
         System.out.println("MEDIA DE INSTRUÇÕES " + generalInstructionsMean);
 
