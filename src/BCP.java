@@ -24,7 +24,11 @@ public class BCP {
     }
 
     public void setInstructionsMean() {
+        if(this.switches == 0 ) {
+            this.instructionsMean = this.instructions;
+        } else{
         this.instructionsMean = this.instructions/this.switches;
+        }
     }
 
     public int getWaitTime() {
