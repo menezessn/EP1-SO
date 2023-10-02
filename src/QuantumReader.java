@@ -11,6 +11,7 @@ public class QuantumReader {
             BufferedReader br = new BufferedReader(new FileReader(root));
             String linha = br.readLine();
             int quantum = Integer.parseInt(linha);
+            br.close();
             return quantum;
         }catch(Exception e){
             System.out.println(e);

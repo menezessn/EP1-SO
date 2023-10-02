@@ -19,6 +19,7 @@ public class programReader {
                 program[i] = linha;
                 i++;
             }
+            br.close();
 
         }catch(Exception e){
             System.out.println(e);
